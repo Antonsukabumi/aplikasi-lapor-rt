@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
     Clock, Search, ShieldAlert, User, CheckCircle, RefreshCw, Phone, MessageCircle,
     Home, FileText, Users, Bell, Settings, LogOut, Menu, X, Eye, AlertTriangle,
     HeartPulse, Megaphone, MapPin, Calendar, Filter, ChevronDown, Recycle, PiggyBank
 } from "lucide-react";
 import type { Laporan } from "@/types/database";
+import type { AdminSession } from "@/types";
 import Link from "next/link";
 
 type JenisLaporan = 'MENINGGAL' | 'SAKIT' | 'BENCANA';
@@ -27,8 +29,9 @@ const STATUS_CONFIG: Record<StatusLaporan, { label: string; bg: string; text: st
 };
 
 export default function AdminDashboard() {
-    const [pin, setPin] = useState("");
-    const [isLogin, setIsLogin] = useState(false);
+    const router = useRouter();
+    const [session, setSession] = useState<AdminSession | null>(null);
+    const [authLoading, setAuthLoading] = useState(true);
     const [laporanList, setLaporanList] = useState<Laporan[]>([]);
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -52,21 +55,41 @@ export default function AdminDashboard() {
         }
     };
 
+    // Check auth on mount
     useEffect(() => {
-        if (isLogin) {
+        checkAuth();
+    }, []);
+
+    const checkAuth = async () => {
+        try {
+            const res = await fetch('/api/auth/session');
+            const data = await res.json();
+            if (!data.success) {
+                router.push('/login?redirect=/admin');
+                return;
+            }
+            setSession(data.data);
+            setAuthLoading(false);
+        } catch {
+            router.push('/login?redirect=/admin');
+        }
+    };
+
+    useEffect(() => {
+        if (session) {
             fetchLaporan();
             // Auto refresh setiap 30 detik
             const interval = setInterval(fetchLaporan, 30000);
             return () => clearInterval(interval);
         }
-    }, [isLogin]);
+    }, [session]);
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (pin === "1234") {
-            setIsLogin(true);
-        } else {
-            alert("PIN Salah! Coba '1234'");
+    const handleLogout = async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            router.push('/login');
+        } catch (err) {
+            console.error('Logout error:', err);
         }
     };
 
@@ -132,32 +155,11 @@ export default function AdminDashboard() {
         selesai: laporanList.filter(l => l.status === 'SELESAI').length,
     };
 
-    // Login Page
-    if (!isLogin) {
+    // Loading State
+    if (authLoading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-6">
-                <form onSubmit={handleLogin} className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
-                    <div className="w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <ShieldAlert className="w-8 h-8 text-white" />
-                    </div>
-                    <h1 className="text-2xl font-bold mb-1 text-slate-900">Dashboard Admin</h1>
-                    <p className="text-sm text-slate-500 mb-6">Masukkan PIN untuk melanjutkan</p>
-                    <input
-                        autoFocus
-                        type="password"
-                        value={pin}
-                        onChange={(e) => setPin(e.target.value)}
-                        className="w-full text-center text-3xl tracking-[0.5em] font-bold p-4 border-2 border-slate-200 rounded-xl mb-4 focus:border-slate-900 outline-none transition-colors"
-                        placeholder="••••"
-                        maxLength={4}
-                    />
-                    <button type="submit" className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-colors">
-                        Masuk ke Dashboard
-                    </button>
-                    <Link href="/" className="block mt-4 text-sm text-slate-400 hover:text-slate-600">
-                        ← Kembali ke Beranda
-                    </Link>
-                </form>
+            <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+                <div className="text-white">Memuat...</div>
             </div>
         );
     }
@@ -209,17 +211,17 @@ export default function AdminDashboard() {
                 </nav>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-800">
-                    <div className="flex items-center gap-3 mb-4">
+                    <Link href="/admin/profil" className="flex items-center gap-3 mb-4 hover:bg-slate-800 p-2 rounded-lg -m-2 transition-colors">
                         <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5" />
+                            <span className="text-white font-bold">{session?.nama.charAt(0).toUpperCase()}</span>
                         </div>
                         <div>
-                            <div className="font-medium">Pak RT</div>
-                            <div className="text-xs text-slate-400">RT 05 / RW 03</div>
+                            <div className="font-medium">{session?.nama}</div>
+                            <div className="text-xs text-slate-400">{session?.rt_info?.nama || session?.role}</div>
                         </div>
-                    </div>
+                    </Link>
                     <button
-                        onClick={() => setIsLogin(false)}
+                        onClick={handleLogout}
                         className="w-full px-4 py-2 rounded-lg bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center gap-2 transition-colors"
                     >
                         <LogOut className="w-4 h-4" />
@@ -250,7 +252,7 @@ export default function AdminDashboard() {
                             </button>
                             <div>
                                 <h1 className="font-bold text-slate-900">Dashboard Laporan</h1>
-                                <p className="text-xs text-slate-500">RT 05 / RW 03, Kelurahan Digital</p>
+                                <p className="text-xs text-slate-500">{session?.rt_info?.nama || 'Admin Dashboard'}{session?.rt_info?.kelurahan ? `, ${session.rt_info.kelurahan}` : ''}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
