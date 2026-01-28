@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "nama": "Ambulans",
+    "nomor": "118",
+    "kategori": "MEDIS",
+    "icon": "🚑",
+    "aktif": true
+  },
+  {
+    "id": "2",
+    "nama": "Polisi",
+    "nomor": "110",
+    "kategori": "KEAMANAN",
+    "icon": "👮",
+    "aktif": true
+  },
+  {
+    "id": "3",
+    "nama": "Pemadam Kebakaran",
+    "nomor": "113",
+    "kategori": "DARURAT",
+    "icon": "🚒",
+    "aktif": true
+  },
+  {
+    "id": "4",
+    "nama": "SAR / Basarnas",
+    "nomor": "115",
+    "kategori": "DARURAT",
+    "icon": "🆘",
+    "aktif": true
+  },
+  {
+    "id": "5",
+    "nama": "PLN",
+    "nomor": "123",
+    "kategori": "UTILITAS",
+    "icon": "⚡",
+    "aktif": true
+  },
+  {
+    "id": "6",
+    "nama": "PDAM",
+    "nomor": "119",
+    "kategori": "UTILITAS",
+    "icon": "💧",
+    "aktif": true
+  },
+  {
+    "id": "7",
+    "nama": "Puskesmas Kecamatan",
+    "nomor": "081234567890",
+    "kategori": "MEDIS",
+    "icon": "🏥",
+    "aktif": true
+  },
+  {
+    "id": "8",
+    "nama": "Ketua RT",
+    "nomor": "081234567891",
+    "kategori": "RT",
+    "icon": "👨‍💼",
+    "aktif": true
+  },
+  {
+    "id": "9",
+    "nama": "Babinsa",
+    "nomor": "081234567892",
+    "kategori": "KEAMANAN",
+    "icon": "👮",
+    "aktif": true
+  },
+  {
+    "id": "10",
+    "nama": "Binmas Polsek",
+    "nomor": "081234567893",
+    "kategori": "KEAMANAN",
+    "icon": "👮‍♂️",
+    "aktif": true
+  },
+  {
+    "id": "11",
+    "nama": "Sopir Ambulan Desa",
+    "nomor": "081234567894",
+    "kategori": "MEDIS",
+    "icon": "🚑",
+    "aktif": true
+  },
+  {
+    "id": "12",
+    "nama": "Damkar Pos Terdekat",
+    "nomor": "081234567895",
+    "kategori": "DARURAT",
+    "icon": "🚒",
+    "aktif": true
+  }
+]

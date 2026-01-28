@@ -1,0 +1,58 @@
+[
+    {
+        "id": "1",
+        "nama": "Plastik Bersih",
+        "harga": 2000,
+        "poin": 20,
+        "icon": "🧴",
+        "aktif": true
+    },
+    {
+        "id": "2",
+        "nama": "Kertas/Kardus",
+        "harga": 1500,
+        "poin": 15,
+        "icon": "📦",
+        "aktif": true
+    },
+    {
+        "id": "3",
+        "nama": "Logam/Kaleng",
+        "harga": 5000,
+        "poin": 50,
+        "icon": "🥫",
+        "aktif": true
+    },
+    {
+        "id": "4",
+        "nama": "Botol Kaca",
+        "harga": 500,
+        "poin": 5,
+        "icon": "🍾",
+        "aktif": true
+    },
+    {
+        "id": "5",
+        "nama": "Botol Plastik",
+        "harga": 3000,
+        "poin": 30,
+        "icon": "🍼",
+        "aktif": true
+    },
+    {
+        "id": "6",
+        "nama": "Minyak Jelantah",
+        "harga": 8000,
+        "poin": 80,
+        "icon": "🛢️",
+        "aktif": true
+    },
+    {
+        "id": "7",
+        "nama": "Elektronik/E-Waste",
+        "harga": 10000,
+        "poin": 100,
+        "icon": "📱",
+        "aktif": true
+    }
+]

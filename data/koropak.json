@@ -1,0 +1,42 @@
+{
+    "total_terkumpul": 250000,
+    "target_bulanan": 500000,
+    "iuran_harian": 500,
+    "total_donatur": 15,
+    "bulan_aktif": "Januari 2026",
+    "riwayat_penyaluran": [
+        {
+            "id": "1",
+            "tanggal": "2026-01-15",
+            "penerima": "Keluarga Pak Ahmad",
+            "keperluan": "Sembako",
+            "jumlah": 150000,
+            "keterangan": "Bantuan sembako untuk keluarga yang terdampak PHK"
+        },
+        {
+            "id": "2",
+            "tanggal": "2026-01-10",
+            "penerima": "Ibu Siti",
+            "keperluan": "Biaya Kesehatan",
+            "jumlah": 100000,
+            "keterangan": "Bantuan biaya berobat ke Puskesmas"
+        }
+    ],
+    "donatur": [
+        {
+            "nama": "Pak RT",
+            "total_hari": 30,
+            "total_nominal": 15000
+        },
+        {
+            "nama": "Ibu Ani",
+            "total_hari": 25,
+            "total_nominal": 12500
+        },
+        {
+            "nama": "Pak Budi",
+            "total_hari": 20,
+            "total_nominal": 10000
+        }
+    ]
+}

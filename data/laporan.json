@@ -1,0 +1,19 @@
+[
+  {
+    "id": "3abf4f69-2634-4a61-8466-34d9ba2feff2",
+    "warga_id": null,
+    "nama_pelapor": "Budi Santoso",
+    "no_hp_pelapor": "08123456789",
+    "jenis": "BENCANA",
+    "deskripsi": "Lampu jalan mati di depan rumah. Kondisi gelap dan membahayakan warga.",
+    "lokasi": "Blok A No 12",
+    "foto_url": null,
+    "latitude": null,
+    "longitude": null,
+    "status": "BARU",
+    "admin_id": null,
+    "balasan": null,
+    "created_at": "2026-01-27T22:29:15.228Z",
+    "updated_at": "2026-01-27T22:29:15.228Z"
+  }
+]
