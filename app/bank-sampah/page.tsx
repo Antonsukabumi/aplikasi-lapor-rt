@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Recycle, Truck, Coins, Package, Scale, Leaf, Phone, MapPin, Clock, MessageCircle, User } from "lucide-react";
+import { ArrowLeft, Recycle, Truck, Coins, Package, Scale, Leaf, Phone, MapPin, Clock, MessageCircle, User, Loader2, Search, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
 interface BankSampahSettings {
@@ -34,6 +34,12 @@ export default function BankSampahPage() {
     const [jenisSampah, setJenisSampah] = useState<JenisSampah[]>([]);
     const [loadingJenis, setLoadingJenis] = useState(true);
 
+    // Saldo State
+    const [phoneCheck, setPhoneCheck] = useState('');
+    const [checkingSaldo, setCheckingSaldo] = useState(false);
+    const [saldoData, setSaldoData] = useState<any>(null);
+    const [errorSaldo, setErrorSaldo] = useState('');
+
     // Fetch settings and jenis sampah
     useEffect(() => {
         async function fetchData() {
@@ -60,17 +66,6 @@ export default function BankSampahPage() {
         fetchData();
     }, []);
 
-    // Mock saldo
-    const saldo = {
-        poin: 150,
-        uang: 25000,
-        transaksi: [
-            { tanggal: '2024-03-15', jenis: 'Plastik', berat: '2 kg', poin: 40 },
-            { tanggal: '2024-03-10', jenis: 'Kardus', berat: '5 kg', poin: 75 },
-            { tanggal: '2024-03-05', jenis: 'Kaleng', berat: '0.5 kg', poin: 25 },
-        ]
-    };
-
     const handleRequest = (e: React.FormEvent) => {
         e.preventDefault();
         setShowSuccess(true);
@@ -85,8 +80,30 @@ export default function BankSampahPage() {
         return `https://wa.me/${phone}?text=${message}`;
     };
 
+    const handleCheckSaldo = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setCheckingSaldo(true);
+        setErrorSaldo('');
+        setSaldoData(null);
+
+        try {
+            const res = await fetch(`/api/bank-sampah/check-saldo?no_hp=${phoneCheck}`);
+            const data = await res.json();
+
+            if (data.success) {
+                setSaldoData(data.data);
+            } else {
+                setErrorSaldo(data.error || 'Data tidak ditemukan');
+            }
+        } catch (err) {
+            setErrorSaldo('Gagal mengambil data saldo');
+        } finally {
+            setCheckingSaldo(false);
+        }
+    };
+
     return (
-        <main className="min-h-screen max-w-md mx-auto bg-gradient-to-b from-green-600 to-green-800 flex flex-col">
+        <main className="min-h-screen max-w-md mx-auto bg-gradient-to-b from-green-600 to-green-800 flex flex-col shadow-2xl">
             {/* Header */}
             <div className="p-4 flex items-center gap-4">
                 <Link href="/" className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors">
@@ -145,7 +162,7 @@ export default function BankSampahPage() {
                 {[
                     { id: 'info', label: 'Info Harga', icon: Scale },
                     { id: 'request', label: 'Jemput', icon: Truck },
-                    { id: 'saldo', label: 'Saldo', icon: Coins },
+                    { id: 'saldo', label: 'Cek Saldo', icon: Coins },
                 ].map((tab) => {
                     const Icon = tab.icon;
                     return (
@@ -169,7 +186,7 @@ export default function BankSampahPage() {
 
                 {/* Tab: Info Harga */}
                 {activeTab === 'info' && (
-                    <div>
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
                         <h2 className="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
                             <Leaf className="w-5 h-5 text-green-600" />
                             Jenis Sampah & Harga
@@ -208,7 +225,7 @@ export default function BankSampahPage() {
 
                 {/* Tab: Request Jemput */}
                 {activeTab === 'request' && (
-                    <div>
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
                         <h2 className="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
                             <Truck className="w-5 h-5 text-green-600" />
                             Request Jemput Sampah
@@ -251,7 +268,8 @@ export default function BankSampahPage() {
                                     onChange={(e) => setRequestForm({ ...requestForm, alamat: e.target.value })}
                                     placeholder="Contoh: Blok A1 No. 5"
                                     className="w-full mt-1 p-3 rounded-xl border border-slate-200 bg-slate-50"
-                                />
+                                >
+                                </input>
                             </div>
 
                             <div>
@@ -269,7 +287,7 @@ export default function BankSampahPage() {
                                 <a
                                     href={getWhatsAppLink()}
                                     target="_blank"
-                                    className="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 flex items-center justify-center gap-2"
+                                    className="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 flex items-center justify-center gap-2 shadow-lg"
                                 >
                                     <MessageCircle className="w-5 h-5" />
                                     Hubungi via WhatsApp
@@ -277,7 +295,7 @@ export default function BankSampahPage() {
                             ) : (
                                 <button
                                     type="submit"
-                                    className="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 flex items-center justify-center gap-2"
+                                    className="w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700 flex items-center justify-center gap-2 shadow-lg"
                                 >
                                     <Truck className="w-5 h-5" />
                                     Minta Dijemput
@@ -287,48 +305,109 @@ export default function BankSampahPage() {
                     </div>
                 )}
 
-                {/* Tab: Saldo */}
+                {/* Tab: Saldo & History */}
                 {activeTab === 'saldo' && (
-                    <div>
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
                         <h2 className="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
                             <Coins className="w-5 h-5 text-green-600" />
-                            Saldo Bank Sampah
+                            Cek Saldo Bank Sampah
                         </h2>
 
-                        {/* Saldo Cards */}
-                        <div className="grid grid-cols-2 gap-3 mb-6">
-                            <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 p-4 rounded-xl text-white">
-                                <div className="text-xs opacity-80">Total Poin</div>
-                                <div className="text-2xl font-bold">{saldo.poin}</div>
-                                <div className="text-xs opacity-80">poin</div>
-                            </div>
-                            <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-xl text-white">
-                                <div className="text-xs opacity-80">Nilai Uang</div>
-                                <div className="text-2xl font-bold">Rp {saldo.uang.toLocaleString()}</div>
-                            </div>
-                        </div>
-
-                        {/* Riwayat */}
-                        <h3 className="font-bold text-slate-700 mb-3">Riwayat Setoran</h3>
-                        <div className="space-y-2">
-                            {saldo.transaksi.map((t, i) => (
-                                <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                                    <div>
-                                        <div className="font-medium text-slate-800">{t.jenis}</div>
-                                        <div className="text-xs text-slate-400">{t.tanggal} • {t.berat}</div>
-                                    </div>
-                                    <div className="text-green-600 font-bold">+{t.poin} poin</div>
+                        {!saldoData ? (
+                            <form onSubmit={handleCheckSaldo} className="bg-slate-50 p-6 rounded-xl border border-slate-200 text-center space-y-4">
+                                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm">
+                                    <Search className="w-8 h-8 text-green-600" />
                                 </div>
-                            ))}
-                        </div>
+                                <div>
+                                    <h3 className="font-bold text-slate-800">Masukkan Nomor HP</h3>
+                                    <p className="text-sm text-slate-500">Gunakan nomor HP yang terdaftar di RT</p>
+                                </div>
+                                <input
+                                    type="tel"
+                                    required
+                                    value={phoneCheck}
+                                    onChange={(e) => setPhoneCheck(e.target.value)}
+                                    placeholder="Contoh: 0812..."
+                                    className="w-full p-4 text-center text-lg font-bold rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                />
+                                {errorSaldo && (
+                                    <p className="text-red-500 text-sm flex items-center justify-center gap-1">
+                                        <AlertCircle className="w-4 h-4" /> {errorSaldo}
+                                    </p>
+                                )}
+                                <button
+                                    type="submit"
+                                    disabled={checkingSaldo}
+                                    className="w-full bg-green-600 text-white font-bold py-4 rounded-xl hover:bg-green-700 flex items-center justify-center gap-2"
+                                >
+                                    {checkingSaldo ? <Loader2 className="animate-spin" /> : 'Cek Saldo Sekarang'}
+                                </button>
+                            </form>
+                        ) : (
+                            <div>
+                                <div className="mb-4 flex items-center justify-between">
+                                    <div>
+                                        <div className="font-bold text-slate-800 text-lg">{saldoData.warga?.nama}</div>
+                                        <button
+                                            onClick={() => { setSaldoData(null); setPhoneCheck(''); }}
+                                            className="text-xs text-green-600 underline"
+                                        >
+                                            Cek nomor lain
+                                        </button>
+                                    </div>
+                                    <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
+                                        Terverifikasi
+                                    </div>
+                                </div>
 
-                        <button className="w-full mt-4 border-2 border-green-600 text-green-600 font-bold py-3 rounded-xl hover:bg-green-50">
-                            Tukar Poin ke Uang
-                        </button>
+                                {/* Saldo Cards */}
+                                <div className="grid grid-cols-2 gap-3 mb-6">
+                                    <div className="bg-gradient-to-br from-yellow-400 to-yellow-500 p-4 rounded-xl text-white shadow-lg">
+                                        <div className="text-xs opacity-80 mb-1">Total Poin</div>
+                                        <div className="text-3xl font-bold">{saldoData.saldo.total_poin}</div>
+                                        <div className="text-xs opacity-80">poin</div>
+                                    </div>
+                                    <div className="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded-xl text-white shadow-lg">
+                                        <div className="text-xs opacity-80 mb-1">Nilai Uang</div>
+                                        <div className="text-3xl font-bold">{parseInt(saldoData.saldo.total_uang).toLocaleString('id-ID')}</div>
+                                        <div className="text-xs opacity-80">Rupiah</div>
+                                    </div>
+                                </div>
+
+                                {/* Riwayat */}
+                                <h3 className="font-bold text-slate-700 mb-3 flex items-center gap-2">
+                                    <Clock className="w-4 h-4" /> Riwayat Terakhir
+                                </h3>
+
+                                {saldoData.history.length === 0 ? (
+                                    <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-xl border border-slate-100">
+                                        Belum ada transaksi
+                                    </div>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {saldoData.history.map((t: any, i: number) => (
+                                            <div key={i} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-100 transition-colors">
+                                                <div>
+                                                    <div className="font-bold text-slate-800">{t.jenis_sampah?.nama || 'Sampah'}</div>
+                                                    <div className="text-xs text-slate-500">
+                                                        {new Date(t.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} • {t.berat_kg} kg
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <div className="text-green-600 font-bold">+{t.poin}</div>
+                                                    <div className="text-xs text-slate-400">poin</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
-
             </div>
         </main>
     );
 }
+
+
