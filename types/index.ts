@@ -28,6 +28,7 @@ export interface Warga {
     updated_at: string;
     // Joined data
     rt_unit?: RtUnit;
+    blok?: string; // Add blok property
 }
 
 export interface AdminUser {
