@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
         await requireAuth(['SUPER_ADMIN']);
 
         const body = await request.json();
-        const { nomor_rt, nomor_rw, kelurahan, kecamatan, kota, alamat_lengkap } = body;
+        const { nomor_rt, nomor_rw, kelurahan, kecamatan, kota, kuota_kk } = body;
 
         if (!nomor_rt || !nomor_rw) {
             return NextResponse.json({ success: false, error: 'Nomor RT dan RW wajib diisi' }, { status: 400 });
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
                 kelurahan,
                 kecamatan,
                 kota,
-                alamat_lengkap,
+                kuota_kk: kuota_kk || 100,
                 is_active: true
             })
             .select()
@@ -83,7 +83,7 @@ export async function PUT(request: NextRequest) {
         await requireAuth(['SUPER_ADMIN']);
 
         const body = await request.json();
-        const { id, nomor_rt, nomor_rw, kelurahan, kecamatan, kota, alamat_lengkap, is_active } = body;
+        const { id, nomor_rt, nomor_rw, kelurahan, kecamatan, kota, kuota_kk, is_active } = body;
 
         if (!id) {
             return NextResponse.json({ success: false, error: 'ID diperlukan' }, { status: 400 });
@@ -101,7 +101,7 @@ export async function PUT(request: NextRequest) {
                 kelurahan,
                 kecamatan,
                 kota,
-                alamat_lengkap,
+                kuota_kk,
                 is_active,
                 updated_at: new Date().toISOString()
             })

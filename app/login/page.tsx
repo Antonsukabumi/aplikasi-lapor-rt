@@ -137,10 +137,20 @@ function LoginForm() {
                     </div>
                 </form>
 
+                {/* Register as Admin */}
+                <div className="text-center mt-6">
+                    <p className="text-slate-400 text-sm">
+                        Belum punya akun admin?{' '}
+                        <Link href="/daftar-admin" className="text-emerald-400 hover:text-emerald-300 font-semibold">
+                            Daftar Admin RT
+                        </Link>
+                    </p>
+                </div>
+
                 {/* Back to Home */}
                 <Link
                     href="/"
-                    className="flex items-center justify-center gap-2 mt-6 text-slate-400 hover:text-white transition-colors"
+                    className="flex items-center justify-center gap-2 mt-4 text-slate-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Kembali ke Beranda

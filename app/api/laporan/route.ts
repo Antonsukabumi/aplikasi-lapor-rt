@@ -1,18 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { requireAuth } from '@/lib/auth';
 
-// GET - Get all laporan
+// GET - Get all laporan (Secured Multi-Tenancy)
 export async function GET(request: NextRequest) {
     try {
+        const session = await requireAuth(); // Require login
         const { searchParams } = new URL(request.url);
         const status = searchParams.get('status');
         const jenis = searchParams.get('jenis');
+        const rtIdParam = searchParams.get('rt_id');
 
         let query = supabase
             .from('laporan')
             .select('*')
             .order('created_at', { ascending: false });
 
+        // Security: Multi-Tenancy Filtering
+        if (session.role === 'SUPER_ADMIN') {
+            // Super Admin can view all, or filter by specific rt_id if provided
+            if (rtIdParam) {
+                query = query.eq('rt_id', rtIdParam);
+            }
+        } else {
+            // Admin RT can ONLY view their own RT's data
+            if (!session.rt_id) {
+                return NextResponse.json({ success: false, data: [] }); // Should not happen for active Admin RT
+            }
+            query = query.eq('rt_id', session.rt_id);
+        }
+
+        // Standard filters
         if (status && status !== 'semua') {
             query = query.eq('status', status.toUpperCase());
         }
@@ -33,6 +51,9 @@ export async function GET(request: NextRequest) {
             data: data || []
         });
     } catch (error) {
+        if (error instanceof Error && error.message.includes('Unauthorized')) {
+            return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+        }
         console.error('Error fetching laporan:', error);
         return NextResponse.json({ success: false, error: 'Gagal mengambil data laporan' }, { status: 500 });
     }

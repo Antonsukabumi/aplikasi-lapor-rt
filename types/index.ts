@@ -10,10 +10,24 @@ export interface RtUnit {
     kelurahan: string | null;
     kecamatan: string | null;
     kota: string | null;
-    alamat_lengkap: string | null;
+    kuota_kk: number;
     is_active: boolean;
     created_at: string;
     updated_at: string;
+}
+
+export interface Warga {
+    id: string;
+    rt_id: string;
+    no_kk: string;
+    nama_kepala_keluarga: string;
+    no_hp: string;
+    alamat: string | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    // Joined data
+    rt_unit?: RtUnit;
 }
 
 export interface AdminUser {

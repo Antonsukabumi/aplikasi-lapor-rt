@@ -23,7 +23,7 @@ export default function KelolaRtPage() {
         kelurahan: '',
         kecamatan: '',
         kota: '',
-        alamat_lengkap: ''
+        kuota_kk: 100
     });
     const [submitting, setSubmitting] = useState(false);
 
@@ -96,7 +96,7 @@ export default function KelolaRtPage() {
             kelurahan: rt.kelurahan || '',
             kecamatan: rt.kecamatan || '',
             kota: rt.kota || '',
-            alamat_lengkap: rt.alamat_lengkap || ''
+            kuota_kk: rt.kuota_kk || 100
         });
         setShowForm(true);
     };
@@ -125,7 +125,7 @@ export default function KelolaRtPage() {
             kelurahan: '',
             kecamatan: '',
             kota: '',
-            alamat_lengkap: ''
+            kuota_kk: 100
         });
     };
 
@@ -303,14 +303,16 @@ export default function KelolaRtPage() {
                             </div>
 
                             <div>
-                                <label className="text-sm font-semibold text-slate-700 block mb-1">Alamat Lengkap</label>
-                                <textarea
-                                    rows={2}
-                                    value={formData.alamat_lengkap}
-                                    onChange={(e) => setFormData({ ...formData, alamat_lengkap: e.target.value })}
-                                    placeholder="Alamat lengkap RT..."
-                                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                <label className="text-sm font-semibold text-slate-700 block mb-1">Kuota KK (Jumlah Warga Maksimal)</label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    value={formData.kuota_kk}
+                                    onChange={(e) => setFormData({ ...formData, kuota_kk: parseInt(e.target.value) || 100 })}
+                                    placeholder="100"
+                                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 />
+                                <p className="text-xs text-slate-500 mt-1">Batasi jumlah KK yang bisa mendaftar di RT ini</p>
                             </div>
 
                             <button

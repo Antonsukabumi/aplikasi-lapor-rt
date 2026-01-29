@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import {
   AlertTriangle, HeartPulse, Info, Megaphone, Siren, Phone, Moon, Sun,
-  Recycle, HandHeart, MessageSquare, Bell, Menu, X, PiggyBank
+  Recycle, HandHeart, MessageSquare, Bell, Menu, X, PiggyBank, UserPlus, Shield
 } from "lucide-react";
 import Link from "next/link";
 import NotificationPrompt from "@/components/NotificationPrompt";
@@ -30,6 +30,7 @@ export default function Home() {
   };
 
   const MENU_ITEMS = [
+    { href: '/daftar', icon: UserPlus, label: 'Daftar Warga', color: 'bg-emerald-500' },
     { href: '/bank-sampah', icon: Recycle, label: 'Bank Sampah', color: 'bg-green-500' },
     { href: '/interaksi-warga', icon: HandHeart, label: 'Interaksi Warga', color: 'bg-purple-500' },
     { href: '/koropak', icon: PiggyBank, label: 'Koropak', color: 'bg-amber-500' },
@@ -178,14 +179,27 @@ export default function Home() {
       {/* Footer / Quick Info */}
       <footer className={`${darkMode ? 'bg-slate-800' : 'bg-slate-50'} p-6 text-center text-xs ${darkMode ? 'text-slate-400' : 'text-slate-400'} pb-8`}>
         <p>Dalam keadaan sangat darurat, segera hubungi 112</p>
-        <div className="mt-4 flex justify-center gap-3 flex-wrap">
-          <a href="tel:08123456789" className={`${darkMode ? 'bg-slate-700 text-white' : 'bg-white'} px-3 py-2 rounded-full border shadow-sm flex items-center gap-2 hover:opacity-80`}>
-            <Phone className="w-4 h-4 text-green-600" />
-            <span>Kontak RT</span>
+        <div className="mt-4 grid grid-cols-3 gap-3 max-w-sm mx-auto">
+          <Link
+            href="/daftar"
+            className={`${darkMode ? 'bg-emerald-600' : 'bg-emerald-500'} text-white px-4 py-3 rounded-xl shadow-sm flex flex-col items-center justify-center gap-1 hover:opacity-90 transition-opacity`}
+          >
+            <UserPlus className="w-5 h-5" />
+            <span className="text-xs font-medium">Daftar Warga</span>
+          </Link>
+          <a
+            href="tel:08123456789"
+            className={`${darkMode ? 'bg-slate-700' : 'bg-white border border-slate-200'} ${darkMode ? 'text-white' : 'text-slate-700'} px-4 py-3 rounded-xl shadow-sm flex flex-col items-center justify-center gap-1 hover:opacity-90 transition-opacity`}
+          >
+            <Phone className="w-5 h-5 text-green-500" />
+            <span className="text-xs font-medium">Kontak RT</span>
           </a>
-          <Link href="/admin" className={`${darkMode ? 'bg-slate-700 text-white' : 'bg-white'} px-3 py-2 rounded-full border shadow-sm flex items-center gap-2 hover:opacity-80`}>
-            <Info className="w-4 h-4 text-blue-600" />
-            <span>Admin</span>
+          <Link
+            href="/login"
+            className={`${darkMode ? 'bg-indigo-600' : 'bg-indigo-500'} text-white px-4 py-3 rounded-xl shadow-sm flex flex-col items-center justify-center gap-1 hover:opacity-90 transition-opacity`}
+          >
+            <Shield className="w-5 h-5" />
+            <span className="text-xs font-medium">Admin</span>
           </Link>
         </div>
       </footer>
