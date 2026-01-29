@@ -87,6 +87,25 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: error.message }, { status: 500 });
         }
 
+        // --- Send WhatsApp Notification ---
+        // In real app, you might query the Admin RT's number from DB
+        const adminWa = process.env.NEXT_PUBLIC_ADMIN_WA;
+
+        if (adminWa) {
+            const { sendWhatsappMessage } = await import('@/lib/whatsapp');
+            const message = `🚨 *LAPORAN BARU: ${jenis.toUpperCase()}*\n\n` +
+                `👤 Pelapor: ${nama_pelapor}\n` +
+                `📍 Lokasi: ${lokasi}\n` +
+                `📝 Ket: ${deskripsi}\n\n` +
+                `Segera cek dashboard admin!`;
+
+            // Fire and forget (don't await to keep UI fast)
+            sendWhatsappMessage(adminWa, message).catch(err =>
+                console.error('Failed to send WA:', err)
+            );
+        }
+        // ----------------------------------
+
         return NextResponse.json({
             success: true,
             message: 'Laporan berhasil dikirim',

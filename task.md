@@ -27,8 +27,8 @@
 - [x] Koneksi Next.js ke Supabase (`lib/supabase.ts`)
 - [x] Implementasi simpan laporan ke database *(API ready)*
 - [x] Implementasi ambil data laporan di dashboard *(API ready)*
-- [ ] Setup Supabase Storage untuk foto
-- [ ] Implementasi upload foto laporan
+- [x] Setup Supabase Storage untuk foto
+- [x] Implementasi upload foto laporan
 
 ---
 
@@ -39,7 +39,7 @@
 - [x] Buat Service Worker (`sw.js`) ✅
 - [x] Generate app icons ✅
 - [x] Register SW di layout ✅
-- [ ] Test install di HP
+- [/] Test install di HP
 
 ---
 
@@ -56,9 +56,9 @@
 ---
 
 ## Fase 5: Notifikasi
-- [ ] Pilih provider WhatsApp API (Fonnte/Twilio)
-- [ ] Setup API route untuk kirim notifikasi
-- [ ] Integrasi notifikasi saat laporan masuk
+- [x] Pilih provider WhatsApp API (Fonnte/Twilio)
+- [x] Setup API route untuk kirim notifikasi
+- [x] Integrasi notifikasi saat laporan masuk
 - [ ] Implementasi Push Notification (Service Worker)
 - [ ] Implementasi alarm suara di dashboard
 
@@ -77,15 +77,15 @@
 ---
 
 ## Fase 7: Bank Sampah
-- [ ] Buat tabel `bank_sampah_jenis`
-- [ ] Buat tabel `bank_sampah_transaksi`
-- [ ] Buat tabel `bank_sampah_saldo`
-- [ ] Halaman info Bank Sampah (`/bank-sampah`)
-- [ ] Form request jemput sampah
-- [ ] Halaman saldo poin warga (`/bank-sampah/saldo`)
-- [ ] Dashboard pengelola (`/pengelola/bank-sampah`)
-- [ ] Konfirmasi jemput & input berat
-- [ ] Hitung poin otomatis
+- [x] Buat tabel `bank_sampah_jenis`
+- [x] Buat tabel `bank_sampah_transaksi`
+- [x] Buat tabel `bank_sampah_saldo`
+- [x] Halaman info Bank Sampah (`/bank-sampah`)
+- [x] Form request jemput sampah
+- [x] Halaman saldo poin warga (`/bank-sampah/saldo`)
+- [x] Dashboard pengelola (`/pengelola/bank-sampah`)
+- [x] Konfirmasi jemput & input berat
+- [x] Hitung poin otomatis
 
 ---
 
@@ -133,14 +133,14 @@
 | Fase | Items | Selesai | Progress |
 |------|-------|---------|----------|
 | 1. MVP | 8 | 8 | ██████████ 100% |
-| 2. Backend | 9 | 0 | ░░░░░░░░░░ 0% |
-| 3. PWA | 5 | 0 | ░░░░░░░░░░ 0% |
-| 4. Darurat & SOS | 4 | 0 | ░░░░░░░░░░ 0% |
-| 5. Notifikasi | 5 | 0 | ░░░░░░░░░░ 0% |
+| 2. Backend | 9 | 7 | ███████░░░ 77% |
+| 3. PWA | 5 | 4 | ████████░░ 80% |
+| 4. Darurat & SOS | 4 | 4 | ██████████ 100% |
+| 5. Notifikasi | 5 | 3 | ██████░░░░ 60% |
 | 6. Admin Lanjutan | 8 | 0 | ░░░░░░░░░░ 0% |
-| 7. Bank Sampah | 9 | 0 | ░░░░░░░░░░ 0% |
+| 7. Bank Sampah | 9 | 9 | ██████████ 100% |
 | 8. Komunitas | 9 | 0 | ░░░░░░░░░░ 0% |
 | 9. Iuran Warga | 5 | 0 | ░░░░░░░░░░ 0% |
 | 10. Aksesibilitas | 4 | 0 | ░░░░░░░░░░ 0% |
-| 11. Deploy | 5 | 0 | ░░░░░░░░░░ 0% |
-| **TOTAL** | **71** | **8** | **11%** |
+| 11. Deploy | 5 | 1 | ██░░░░░░░░ 20% |
+| **TOTAL** | **71** | **36** | **50%** |

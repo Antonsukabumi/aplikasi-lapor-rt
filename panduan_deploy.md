@@ -36,8 +36,10 @@ Anda akan melihat halaman "Configure Project".
     | `NEXT_PUBLIC_SUPABASE_URL` | (Copy dari .env.local) |
     | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | (Copy dari .env.local) |
     | `JWT_SECRET` | (Isi bebas, contoh: `rahasia123`) |
+    | `FONNTE_TOKEN` | (Token dari Fonnte.com) |
+    | `NEXT_PUBLIC_ADMIN_WA` | (Nomor WA Admin, cth: 08123...) |
 
-    *Cara isi:* Masukkan Nama di kiri, Nilai di kanan, lalu klik tombol **Add**. Ulangi untuk ketiga variable di atas.
+    *Cara isi:* Masukkan Nama di kiri, Nilai di kanan, lalu klik tombol **Add**. Ulangi untuk semua variable di atas.
 
 ## Langkah 5: Deploy
 1.  Klik tombol besar **"Deploy"**.
